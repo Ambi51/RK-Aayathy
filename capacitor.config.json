@@ -1,0 +1,24 @@
+{
+  "appId": "com.rk.ayadi",
+  "appName": "RK ஆயாதி கணிதம்",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#eef0ec"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": true,
+      "launchShowDuration": 600,
+      "backgroundColor": "#1d5c63",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": false
+    },
+    "StatusBar": {
+      "style": "DEFAULT",
+      "backgroundColor": "#eef0ec"
+    }
+  }
+}
