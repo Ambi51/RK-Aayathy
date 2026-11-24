@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d5c63">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="RK ஆயாதி">
+<title>RK ஆயாதி கணிதம் – மரபுக் கட்டடக்கலை முறை</title>
+
+<style>
+@font-face{font-family:'Noto Serif Tamil';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/noto-serif-tamil-tamil-400-normal.woff2) format('woff2');unicode-range:U+0964-0965,U+0B82-0BFA,U+200C-200D,U+25CC}
+@font-face{font-family:'Noto Serif Tamil';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/noto-serif-tamil-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2018-201D,U+2032-2033,U+2013-2014,U+2022,U+2026}
+@font-face{font-family:'Noto Serif Tamil';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/noto-serif-tamil-tamil-600-normal.woff2) format('woff2');unicode-range:U+0964-0965,U+0B82-0BFA,U+200C-200D,U+25CC}
+@font-face{font-family:'Noto Serif Tamil';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/noto-serif-tamil-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2018-201D,U+2032-2033,U+2013-2014,U+2022,U+2026}
+@font-face{font-family:'Noto Serif Tamil';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/noto-serif-tamil-tamil-700-normal.woff2) format('woff2');unicode-range:U+0964-0965,U+0B82-0BFA,U+200C-200D,U+25CC}
+@font-face{font-family:'Noto Serif Tamil';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/noto-serif-tamil-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2018-201D,U+2032-2033,U+2013-2014,U+2022,U+2026}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#eef0ec;--card:#fafaf7;--ink:#1e2a2d;--mute:#5d6b6e;--line:#cfd5cf;--acc:#1d5c63;--good:#2b7a4b;--goodbg:#dcefe2;--bad:#a9331f;--badbg:#f6dfd9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#14191b;--card:#1c2326;--ink:#e6ece9;--mute:#9aa8aa;--line:#33403f;--acc:#6bc1c9;--good:#7fd19c;--goodbg:#1d3326;--bad:#ef8a76;--badbg:#3a211c}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#14191b;--card:#1c2326;--ink:#e6ece9;--mute:#9aa8aa;--line:#33403f;--acc:#6bc1c9;--good:#7fd19c;--goodbg:#1d3326;--bad:#ef8a76;--badbg:#3a211c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Serif Tamil","Latha","Nirmala UI",serif;line-height:1.7;font-size:16px}
+main{max-width:760px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:clamp(2.4rem,9vw,3.4rem);margin:.3em 0 .1em;color:var(--acc);text-align:center;line-height:1.3;font-weight:700}
+.sub{color:var(--mute);margin:0 0 22px;font-size:.98rem;text-align:center}
+section{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:16px}
+h2{font-size:1.1rem;margin:0 0 10px}
+label{display:block;font-size:.9rem;color:var(--mute);margin:10px 0 3px}
+input,select{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+#n{font-size:1.6rem;font-weight:700;text-align:center;max-width:260px}
+.row{display:grid;grid-template-columns:1fr;gap:0 12px}
+@media(min-width:600px){.row{grid-template-columns:1fr 1fr}}
+.hint,.note{font-size:.82rem;color:var(--mute)}
+.hint{margin:6px 0 0}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--mute);font-size:.82rem}
+td.calc{white-space:nowrap;color:var(--mute)}
+tr.grp td{background:var(--bg);font-weight:700;color:var(--acc);font-size:.85rem}
+.tag{display:inline-block;padding:1px 9px;border-radius:99px;font-size:.82rem;font-weight:600;white-space:nowrap}
+.g{background:var(--goodbg);color:var(--good)}
+.b{background:var(--badbg);color:var(--bad)}
+.n{background:var(--line);color:var(--mute)}
+#sum{font-size:1.05rem;font-weight:700;padding:10px 12px;border-radius:8px;margin-bottom:12px}
+.two{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+button{font:inherit;cursor:pointer;border:1px solid var(--acc);background:var(--acc);color:var(--bg);padding:9px 14px;border-radius:6px;font-weight:600;width:100%;margin-top:12px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{width:auto;margin:0;padding:3px 11px;background:transparent;color:var(--acc)}
+.chip:hover{background:var(--goodbg)}
+a{color:var(--acc)}
+.nmrow{border-top:1px solid var(--line);margin-top:12px;padding-top:2px}
+.nm{margin-top:8px}.nm .chip{margin:2px 4px 2px 0}
+.nfgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media(max-width:340px){.nfgrid{grid-template-columns:1fr}}
+.nfh{font-size:.92rem;font-weight:600;color:var(--ink);line-height:1.4;min-height:5.8em}
+@media(min-width:560px){.nfh{min-height:2.8em}}
+.nfgrid .chip{font-size:1rem}
+.nfgrid .note{font-size:.92rem}
+.chip small{font-weight:400;color:var(--mute);font-size:.72rem}
+details{margin-top:14px}summary{cursor:pointer;color:var(--acc);font-weight:600}
+</style>
+</head>
+<body>
+<main>
+<h1>RK ஆயாதி கணிதம்</h1>
+<p class="sub">மரபுக் கட்டடக்கலை (கோ. திருஞானம்) நூல் முறை, நாம நட்சத்திரக் கணிப்புடன்</p>
+
+<section>
+<h2>அளவு</h2>
+<label for="n">ஆயாதி எண்</label>
+<input id="n" type="text" value="23" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="23 அல்லது 5′ 3″">
+<div style="display:flex;gap:8px;justify-content:center;margin-top:8px"><button type="button" class="chip" id="bft">′ அடி</button><button type="button" class="chip" id="bin">″ அங்குலம்</button></div>
+<p class="hint" id="conv" style="text-align:center"></p>
+<label for="fm">பின்னம் (கால், அரை, முக்கால்) உள்ள அளவை எடுக்கும் முறை</label>
+<select id="fm"><option value="r">அருகிலுள்ள முழு அங்குலம்</option><option value="f">கீழ் முழு அங்குலம்</option><option value="c">மேல் முழு அங்குலம்</option><option value="q">கால் அங்குலமே அலகு (×4)</option></select>
+<p class="hint">½, ¼, ¾, 1/2, அரை, கால், முக்கால் ஆகியவற்றை இடலாம். எ.கா. 6′ 3½″</p>
+<p class="hint">படிமம் அல்லது கட்டட உயரம் அல்லது நீளத்தை, தேர்ந்த அலகில் எடுத்த முழு எண்.</p>
+<h2 style="margin-top:18px;font-size:1rem">நட்சத்திரங்கள் (பெயரிலிருந்தும் காணலாம்)</h2>
+<div class="nmrow"><label for="kname">கர்த்தா பெயர்</label><input id="kname" type="text" placeholder="எ.கா. குமார், Kumar" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="hint nm" id="kh"></div>
+<label for="kn">கர்த்தா நட்சத்திரம்</label><select id="kn"></select></div>
+<div class="nmrow"><label for="vname">ஊர் பெயர்</label><input id="vname" type="text" placeholder="எ.கா. மதுரை, Salem" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="hint nm" id="vh"></div>
+<label for="vn">வாஸ்து (ஊர்) நட்சத்திரம்</label><select id="vn"></select></div>
+<div class="nmrow"><label for="dn">தெய்வம் (தேர்ந்தால் சுவாமி நட்சத்திரம் தானாக வரும்)</label><select id="dn"></select>
+<label for="sname">அல்லது சுவாமி நாமம்</label><input id="sname" type="text" placeholder="எ.கா. முருகன்" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="hint nm" id="sh"></div>
+<label for="sn">சுவாமி நட்சத்திரம்</label><select id="sn"></select></div>
+<p class="hint">பெயரின் முதல் ஒலியைக் கொண்டு நாம நட்சத்திரம் கணிக்கப்படும். ஒரு ஒலிக்கு ஒன்றுக்கு மேற்பட்ட நட்சத்திரம் வந்தால், பொருத்தமானதைத் தொடுங்கள்.</p>
+</section>
+
+<section>
+<h2>முடிவு</h2>
+<div id="sum"></div>
+<div class="wrap"><table>
+<thead><tr><th>பொருத்தம்</th><th>கணக்கு</th><th>மீதி</th><th>பலன்</th><th></th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+</section>
+
+<section>
+<h2>அருகிலுள்ள பொருந்தும் அளவு</h2>
+<p class="note" style="margin-top:0">அளவைக் குறைத்தோ கூட்டியோ பெறக்கூடிய அடுத்த பொருந்தும் அளவு. தொட்டால் மேலே இட்டு கணிக்கும்.</p>
+<div class="nfgrid"><div>
+<div class="nfh">நட்சத்திரங்கள் பொருந்தும் அருகிலுள்ள அளவு</div><div class="note">குறைத்தால்</div><div class="chips" id="nfd" style="margin-top:4px"></div>
+<div class="note" style="margin-top:10px">கூட்டினால்</div><div class="chips" id="nfu" style="margin-top:4px"></div>
+</div><div>
+<div class="nfh">ஆறு அடிப்படைப் பொருத்தங்களும் நன்றாக அமையும் அருகிலுள்ள அளவு</div>
+<div class="note">குறைத்தால்</div><div class="chips" id="sfd" style="margin-top:4px"></div>
+<div class="note" style="margin-top:10px">கூட்டினால்</div><div class="chips" id="sfu" style="margin-top:4px"></div>
+</div></div>
+<div class="nfh" style="margin-top:18px;min-height:0">நட்சத்திரப் பொருத்தமும் ஆறு அடிப்படைப் பொருத்தங்களும் சேர்ந்து அமையும் அருகிலுள்ள அளவு</div>
+<div class="nfgrid"><div><div class="note">குறைத்தால்</div><div class="chips" id="bfd" style="margin-top:4px"></div></div>
+<div><div class="note">கூட்டினால்</div><div class="chips" id="bfu" style="margin-top:4px"></div></div></div>
+</section>
+
+<section>
+<h2>நூலின் பொருந்திய எண்கள்</h2>
+<p id="tnote" class="note" style="margin-top:0"></p>
+<div class="note">முன் உள்ள 5</div><div class="chips" id="tbefore" style="margin-top:4px"></div>
+<div class="note" style="margin-top:10px">பின் உள்ள 5</div><div class="chips" id="tafter" style="margin-top:4px"></div>
+<details><summary>முழுப் பட்டியல்</summary>
+<p class="note">* குறியிட்டவை படத்தில் தெளிவில்லாமலோ, எண்ணும் நட்சத்திரமும் பொருந்தாமலோ இருந்ததால் திருத்தப்பட்டவை. 8 பதிவுகள் (1011, 2683, 2895, 3919, 6269, 8177, 8569, 9039) சரிசெய்ய முடியாததால் விடப்பட்டுள்ளன.</p>
+<div class="chips" id="tfull"></div></details>
+</section>
+
+<section>
+<h2>நட்சத்திரப் பலன் (தாராபலன்)</h2>
+<p class="note" style="margin-top:0">ஆயாதி நட்சத்திரம்: <b id="ayn"></b>. கர்த்தா, வாஸ்து, சுவாமி நட்சத்திரங்களிலிருந்து எண்ணி, 9-ஆல் வகுத்த மீதியால் பரியாயம் காணப்படும்.</p>
+<div class="wrap"><table>
+<thead><tr><th>யாருக்கு</th><th>நட்சத்திரம்</th><th>எண்ணிக்கை</th><th>பரியாயம்</th><th></th></tr></thead>
+<tbody id="srows"></tbody></table></div>
+</section>
+
+<section>
+<h2>ஏற்ற எண்களைத் தேடு</h2>
+<div class="two">
+<div><label for="a">தொடக்கம்</label><input id="a" type="number" min="1" value="1"></div>
+<div><label for="z">முடிவு</label><input id="z" type="number" min="1" value="120"></div>
+<div><label for="mb">அனுமதிக்கும் தீய பலன்</label><select id="mb"><option value="0">0</option><option value="1">1</option><option value="2" selected>2</option></select></div>
+</div>
+<button id="scan" type="button">தேடு</button>
+<p class="hint">அடிப்படை ஆறு பொருத்தங்களில் நூலின் விதிப்படி ஏற்கத்தக்க எண்கள் காட்டப்படும். மேலே நட்சத்திரம் தேர்ந்திருந்தால் அவற்றின் பொருத்தமும் பார்க்கப்படும். ஒன்றைத் தொட்டால் மேலே கணிக்கப்படும்.</p>
+<div class="chips" id="chips"></div>
+</section>
+
+<details><summary>27 நட்சத்திரங்களும் ஒலிகளும்</summary><div class="wrap"><table id="chart"></table></div></details>
+
+<p class="note">இது நூலில் உள்ள விதிகளின் அடிப்படையிலான கணக்கு. இறுதி முடிவுக்கு அனுபவமுள்ள ஸ்தபதியிடம் உறுதி செய்துகொள்ளவும்.</p>
+<p class="note"><a href="https://claude.ai/artifact/VXerRVozioDgxiRgUHxcvd">சிற்பச் செந்நூல் முறைக் கணிப்பான்</a></p>
+</main>
+
+<script>
+const NAK=["அசுவினி","பரணி","கார்த்திகை","ரோகிணி","மிருகசீரிடம்","திருவாதிரை","புனர்பூசம்","பூசம்","ஆயில்யம்","மகம்","பூரம்","உத்திரம்","அஸ்தம்","சித்திரை","சுவாதி","விசாகம்","அனுஷம்","கேட்டை","மூலம்","பூராடம்","உத்திராடம்","திருவோணம்","அவிட்டம்","சதயம்","பூரட்டாதி","உத்திரட்டாதி","ரேவதி"];
+const L=s=>s.split(";").map(x=>x.split("|"));
+const AYAM=L("யோகம்|எதிர்பாராத செலவு|g;போகம்|துய்த்தல்|g;சம்ப்ராப்தி|நற்பேறு|g;வீரம்|கொற்றம்|g;தான்யம்|கூல வகைகள்|g;தனம்|செல்வம்|g;சுகம்|இன்பம்|g;தர்மம்|அறம்|g;ஞானம்|மெய்யறிவு|g;யோகம்|ஒன்றிப்பு (லயம்)|g;சித்தி|வெற்றி|g;அர்த்தம்|பொருள்|g");
+const VYAYAM=L("புக்தி|துய்த்தல்|g;முக்தி|வீடு|g;சுபம்|நன்மை|g;சம்ருத்தி|நல்வளம்|g;சம்பத்|பல்வகைச் செல்வம்|g;தனம்|பொருட்செல்வம்|g;மேன்மை|வளர்ச்சி|g;நாசம்|அழிவு|b;கலகம்|சண்டை|b;நட்பு|நேயம்|g");
+const YONI=L("துவஜம்|கொடி, கிழக்கு (இந்திரன்)|g;தூமம்|புகை, தென்கிழக்கு (அக்னி)|b;சிம்மம்|சிங்கம், தெற்கு (எமன்)|g;சுவானம்|நாய், தென்மேற்கு (நிருதி)|b;விருஷபம்|எருது, மேற்கு (வருணன்)|g;கரம்|கழுதை, வடமேற்கு (வாயு)|b;கஜம்|யானை, வடக்கு (குபேரன்)|g;காகம்|காக்கை, வடகிழக்கு (ஈசானன்)|b");
+const AMSAM=L("தஸ்கராம்சம்|வறுமை, தீமை (திருடன்)|b;புத்தியம்சம்|நல்லறிவு, கல்வித் திறமை (இன்பம் துய்ப்போன்)|g;சத்தியம்சம்|நன்மை, நன்மைக்குக் காரணமானவன் (ஆற்றலுடையோன்)|g;தன்யன்|நன்மையும் அதற்குரிய பயனும் (பேறு பெறுவோன்)|g;நிருபன்|நன்மைகளுடையவன் (அரசன்)|g;கிளீபன்|கலகம், குடும்ப அபிவிருத்தி (அலி)|b;நிர்பீதி|வெற்றி (அஞ்சா நெஞ்சன்)|g;தரித்திரன்|வறியவன்|b;பிரேஷ்யன்|புத்திர, குடும்ப விருத்தி (சேவகன்)|g");
+const VARAM=L("ஞாயிறு|குரோதமுண்டாகும், மத்தியம்|m;திங்கள்|மிகுந்த நலமுண்டாகும்|g;செவ்வாய்|தனநாசமுண்டாகும்|b;புதன்|லட்சுமிகரமுண்டாகும்|g;வியாழன்|புத்தி, தன சம்பத்துண்டாகும்|g;வெள்ளி|சகல காரியமும் நலமுண்டாகும்|g;சனி|சோபயம், மத்திய பலனுண்டாகும்|m");
+const VAMSAM=L("பிரம்ம வம்சம்|மிகுந்த சுபம் உண்டாம்|g;க்ஷத்திரிய வம்சம்|வெற்றி உண்டாம்|g;வைசிய வம்சம்|தனமுண்டாம்|g;சூத்ர வம்சம்|தானிய பலன் மத்தியம்|m");
+const TH=L("பிரதமை|உத்தமத்தில் மத்தியமம்|m;துவிதியை|இன்பமுண்டாகும்|g;திருதியை|ஜெயமுண்டாகும்|g;சதுர்த்தி|மத்திம பலன்|m;பஞ்சமி|புத்ர சம்பத்தும் நன்மையும்|g;சஷ்டி|மத்திம பலன்|m;ஸப்தமி|போகபாக்கியமும் சுகமும்|g;அஷ்டமி|வியாதியுண்டாகும்|b;நவமி|மனைப் பாழாகும்|b;தசமி|பாக்கியமும் நன்மையும்|g;ஏகாதசி|சிறுமை உண்டாகும்|b;துவாதசி|அன்னம், வஸ்திரம், கல்வி உண்டாகும்|g;திரயோதசி|கல்வி உண்டாகும்|g;சதுர்த்தசி|மனைப் பாழாகும்|b;பூர்ணை/அமாவாசை|சுபமுண்டாகும்|g");
+const RASI=L("மேஷம்|பிணிகளுண்டாகும்|b;ரிஷபம்|பெருமையும் செல்வமும் உண்டாகும்|g;மிதுனம்|தனமிருந்தும் மத்திய பலன்|m;கடகம்|வெற்றியும் நல்ல ஆயுளும்|g;சிம்மம்|வசீகரம், செல்வம்|g;கன்னி|அறிவும் ஆயுளும்|g;துலாம்|போகமும் செல்வமும்|g;விருச்சிகம்|ஒன்றுக்கொன்று பொருந்தாது நடக்கும்|b;தனுசு|வெற்றியும் செல்வமும் சமம்|m;மகரம்|நாளுக்கு நாள் செல்வமும் புத்ர விருத்தியும்|g;கும்பம்|செல்வமும் துன்பமும் கலந்து நடக்கும்|m;மீனம்|வெற்றி உண்டாயினும் தாமதம்|m");
+const BHU=L("பிருத்வி|நிலம்|n;அப்பு|நீர்|n;வாயு|காற்று|n;தேயு|தீ|n;ஆகாசம்|வானம்|n");
+const GUNA=L("சாத்விக குணம்|உத்தமம்|g;ராஜச குணம்|மத்திமம்|m;தாமச குணம்|அதம பலன்|b");
+const SUTRA=L("பால சூத்ரம்|உத்தம பலனாய் நடக்கும்|g;குமார சூத்ரம்|நல்லவை நடக்கும்|g;அரச சூத்ரம்|நன்மையுண்டாகும்|g;விருத்த சூத்ரம்|மத்திம பலனாய் நடக்கும்|m;மரண சூத்ரம்|தீமைகள் நடக்கும்|b");
+const PAR=["ஜென்மம் (பிறப்பு)","சம்பத்து (நற்பேறு)","விபத்து (ஆபத்து)","க்ஷேமம் (நற்சுகம்)","பிரத்தியரம் (விரைவற்றது)","சாதகம் (அனுகூலம்)","வதை (கொலை)","மைத்திரம் (நட்பு)","பரம மைத்திரம் (முழு நட்பு)"];
+const YOGA=[["விசாகம்","அனுஷம்","கேட்டை","மூலம்"],["பூராடம்","உத்திராடம]",null,"திருவோணம்"],["அவிட்டம்","சதயம்","பூரட்டாதி","உத்திரட்டாதி"],["ரேவதி","அசுவினி","பரணி","கார்த்திகை"],["ரோகிணி","மிருகசீரிடம்","திருவாதிரை","புனர்பூசம்"],["பூசம்","ஆயில்யம்","மகம்","பூரம்"],["உத்திரம்","அஸ்தம்","சித்திரை","சுவாதி"]];
+YOGA[1][1]="உத்திராடம்";
+const YNAME=["வியோகம்","மரணம்","நாசம்","அமிர்தம்"];
+const GANA={"தேவகணம்":"அசுவினி மிருகசீரிடம் பூசம் புனர்பூசம் சுவாதி அஸ்தம் திருவோணம் அனுஷம் ரேவதி","மானுஷ கணம்":"பூரம் பூராடம் பூரட்டாதி ரோகிணி பரணி உத்திரம் உத்திராடம் உத்திரட்டாதி திருவாதிரை","ராட்சஸ கணம்":"கார்த்திகை மகம் கேட்டை மூலம் விசாகம் சதயம் அவிட்டம் சித்திரை ஆயில்யம்"};
+const DEITY=L("கணபதி|சதயம்;சுப்பிரமணியன், சண்முகன்|கார்த்திகை;முருகன், கந்தன்|விசாகம்;சிவன்|திருவாதிரை;பிரம்மா|ரோகிணி;கிருஷ்ணன்|ரோகிணி;விஷ்ணு|திருவோணம்;இராமன்|புனர்பூசம்;சனி|பரணி;பகவதி, பார்வதி|பூரம்;காளி|கார்த்திகை;துர்க்கை, சரஸ்வதி|சுவாதி;லட்சுமி|உத்திரம்;பூமிதேவி|விசாகம்;சண்டேசுவரன்|சுவாதி;க்ஷேத்ரபாலகன்|மிருகசீரிடம்;சந்திரன்|ரோகிணி;ஆதித்தன்|மகம்;வீரபத்திரன்|பரணி;சாஸ்தா|உத்திரம்;கருடன், அனுமான்|சுவாதி;வாமனன்|திருவோணம்;மத்ஸ்யாவதாரம்|ரேவதி;கூர்மாவதாரம்|கார்த்திகை;வராகாவதாரம்|மூலம்;நரசிம்மன்|சுவாதி;பரசுராமன்|மிருகசீரிடம்;ஸ்ரீதரன்|மூலம்;ஞானி|அஸ்தம்;பலராமன்|திருவாதிரை;கல்கி|உத்திரம்;லிங்கம் – சுயம்பு|திருவாதிரை;லிங்கம் – தைவிகம்|பூசம்;லிங்கம் – ஆருஷம்|சுவாதி;லிங்கம் – ஆசுரம்|உத்திரம்;லிங்கம் – மானுஷம்|அனுஷம்");
+const $=id=>document.getElementById(id);
+const R=(v,d)=>{const r=v%d;return r===0?d:r};
+
+function calc(N){
+  const ay=R(N*8,12),vy=R(N*9,10),yo=R(N*3,8),st=R(N*8,27),vr=R(N*9,7),am=R(N*4,9),vm=R(N*9,4),th=R(N*9,30),ra=R(N*4,12),vd=R(N*27,100),bu=R(N,5),gu=R(N,3),su=R(st,5);
+  const sn=NAK[st-1];let yg="சித்தயோகம்",yl="g";
+  YOGA[vr-1].forEach((s,i)=>{if(s===sn){yg=YNAME[i]+"யோகம்";yl=i===3?"g":"b"}});
+  const t15=th>15?th-15:th;
+  const first=NAK.indexOf(YOGA[vr-1][0])+1,cnt=((st-first+27)%27)+1;
+  const dn=cnt<=9?"ஏக நேத்ரம்":(cnt<=21?"த்வி நேத்ரம்":"குருட்டு நேத்ரம்");
+  const lv=vd<=25?"உத்தமம்":(vd<=75?"உத்தம–மத்திமம்":"விருத்தாயுசு");
+  const g=Object.keys(GANA).find(k=>GANA[k].split(" ").includes(sn));
+  const lAy=ay>vy?"g":"b",lVy=VYAYAM[vy-1][2],lYo=YONI[yo-1][2],lVr=VARAM[vr-1][2],lAm=AMSAM[am-1][2];
+  const six=[lAy,lVy,lYo,yl,lVr,lAm],bad=six.filter(x=>x==="b").length;
+  const ss0=sel(),nb0=ss0.filter(q=>!par(q.i,st).ok).length,rej=ss0.length?nb0>0:bad>=3;
+  const e=(a,i)=>a[i-1];
+  const rows=[
+   ["g","அடிப்படை ஆறு பொருத்தங்கள்"],
+   ["ஆயம்",`${N} × 8 ÷ 12`,ay,e(AYAM,ay).slice(0,2).join(" – "),lAy,lAy==="g"?"ஆயம் மிகை":"இழப்பு மிகை"],
+   ["வியயம்",`${N} × 9 ÷ 10`,vy,e(VYAYAM,vy).slice(0,2).join(" – "),lVy],
+   ["யோனி",`${N} × 3 ÷ 8`,yo,e(YONI,yo).slice(0,2).join(" – "),lYo],
+   ["தினம் (நட்சத்திரம்)",`${N} × 8 ÷ 27`,st,sn,yl,yg],
+   ["வாரம்",`${N} × 9 ÷ 7`,vr,e(VARAM,vr)[0]+" – "+e(VARAM,vr)[1],lVr],
+   ["அம்சம்",`${N} × 4 ÷ 9`,am,e(AMSAM,am).slice(0,2).join(" – "),lAm],
+   ["g","பிற பலன்கள்"],
+   ["வம்சம்",`${N} × 9 ÷ 4`,vm,e(VAMSAM,vm).slice(0,2).join(" – "),e(VAMSAM,vm)[2]],
+   ["திதி",`${N} × 9 ÷ 30`,th,e(TH,t15).slice(0,2).join(" – "),e(TH,t15)[2]],
+   ["ராசி",`${N} × 4 ÷ 12`,ra,e(RASI,ra).slice(0,2).join(" – "),e(RASI,ra)[2]],
+   ["வயது",`${N} × 27 ÷ 100`,vd,`${vd} வயது – ${lv}`,"n"],
+   ["பூதம்",`${N} ÷ 5`,bu,e(BHU,bu).slice(0,2).join(" – "),"n"],
+   ["குணம்",`${N} ÷ 3`,gu,e(GUNA,gu).slice(0,2).join(" – "),e(GUNA,gu)[2]],
+   ["சூத்ரம்",`${sn}(${st}) ÷ 5`,su,e(SUTRA,su).slice(0,2).join(" – "),e(SUTRA,su)[2]],
+   ["திருஷ்டி",`${NAK[first-1]} முதல் எண்ணிக்கை`,cnt,dn,"n"],
+   ["யோகம்",`${VARAM[vr-1][0]} + ${sn}`,"",yg,yl],
+   ["கணம்","ஆயாதி நட்சத்திரம்","",g,"n"]
+  ];
+  return{N,st,bad,rej,lYo,rows,okAll:!rej};
+}
+function par(f,t){const c=((t-f+27)%27)+1,p=R(c,9);return{c,p,ok:[2,4,6,8,9].includes(p)}}
+function sel(){return[["கர்த்தா","kn"],["வாஸ்து (ஊர்)","vn"],["சுவாமி","sn"]].map(([l,id])=>({l,i:parseInt($(id).value)})).filter(x=>x.i>0)}
+const TG={g:["g","நன்று"],m:["n","மத்திமம்"],b:["b","தவிர்க்க"],n:["n",""]};
+const tag=(l,t)=>{const x=TG[l]||TG.n,s=t||x[1];return s?`<span class="tag ${x[0]}">${s}</span>`:""};
+
+function render(){
+  const N=readN(),s=$("sum");
+  if(!(N>0)){s.className="n";s.textContent="ஒரு முழு எண்ணை இடுங்கள்.";$("rows").innerHTML="";$("srows").innerHTML="";return}
+  const r=calc(N),ss=sel();renderT(N);nearFit(N);
+  $("rows").innerHTML=r.rows.map(x=>x[0]==="g"?`<tr class="grp"><td colspan="5">${x[1]}</td></tr>`:`<tr><td><b>${x[0]}</b></td><td class="calc">${x[1]}</td><td>${x[2]}</td><td>${x[3]}</td><td>${tag(x[4],x[5])}</td></tr>`).join("");
+  $("ayn").textContent=`${r.st} – ${NAK[r.st-1]}`;
+  $("srows").innerHTML=ss.length?ss.map(q=>{const p=par(q.i,r.st);return`<tr><td>${q.l}</td><td>${NAK[q.i-1]}</td><td>${p.c}</td><td>${PAR[p.p-1]}</td><td>${tag(p.ok?"g":"b",p.ok?"பொருந்தும்":"பொருந்தாது")}</td></tr>`}).join(""):`<tr><td colspan="5" class="note">மேலே நட்சத்திரங்களைத் தேர்ந்தால் இங்கே பலன் தெரியும்.</td></tr>`;
+  const sb=ss.filter(q=>!par(q.i,r.st).ok).length;
+  s.className=r.rej?"b":(r.bad===0?"g":"n");
+  s.textContent=r.rej?`தள்ளத்தக்கது. ஆறு பொருத்தங்களில் ${r.bad} தீய பலன்${r.lYo==="b"?"; யோனி பொருந்தவில்லை":""}.`:(r.bad===0?"ஆறு பொருத்தங்களும் நன்று. மிகச் சிறந்தது.":`ஆறில் ${r.bad} தீய பலன் மட்டும் உள்ளதால் ஏற்றுக்கொள்ளலாம். தினமும் யோனியும் நன்று.`)+(sb?` நட்சத்திரப் பலனில் ${sb} பொருந்தவில்லை.`:"");
+  if(ss.length){s.className=r.rej?"b":"g";s.textContent=r.rej?`தள்ளத்தக்கது. நட்சத்திரப் பலனில் ${sb} பொருந்தவில்லை.`:`ஆயாதி நட்சத்திரம் தேர்ந்த எல்லா நட்சத்திரங்களுக்கும் பொருந்துகிறது. ஆறு பொருத்தங்களில் ${r.bad} தீய பலன் (தினம், யோனி முதன்மையல்ல).`}
+  else{s.className=r.rej?"b":"n";s.textContent=`ஆறில் ${r.bad} தீய பலன்${r.rej?"; தள்ளத்தக்கது":""}. கர்த்தா, வாஸ்து, சுவாமி நட்சத்திரங்களைத் தேர்ந்தால் முதன்மைப் பொருத்தம் பார்க்கப்படும்.`}
+}
+const TD="17:1,21:6,27:27,37:26,55:8,127:17,129:6,149:4,162:27,217:8,239:22,253:26,307:26,339:12,351:27,405:27*,433:8,505:17,507:6,685:26,729:27,779:22,783:27,883:17,885:6,977:13,1009:26,1107:27,1157:22,1161:27,1259:1,1387:26,1479:6,1529:1*,1539:27,1549:26,1637:1,1679:13*,1765:26,1819:26,1857:6,1907:1,1917:27,1927:26,2017:17,2117:7,2129:22,2143:26,2235:6,2237:22,2273:13,2295:27,2305:26*,2323:8,2395:17,2403:27,2507:22,2575:26,2607:12,2613:6,2619:27,2669:22,2673:27,2773:17,2775:6,2953:26,2991:6,3045:6*,3051:27,3079:8,3149:1,3153:6,3277:26*,3369:6,3375:27,3429:27,3439:26,3457:8,3527:1*,3529:17,3531:6,3655:26,3709:26,3747:6,3753:27,3807:27,3817:26,3835:8,3907:17*,4033:26,4087:26,4125:6,4131:27,4185:27,4195:26,4213:8,4285:17*,4287:6,4465:26,4503:6,4509:27,4559:22,4573:26,4665:6,4757:13,4887:27,4937:22,4969:8,5039:1,5043:6,5265:27,5309:1,5329:26,5347:8,5417:1,5421:6,5599:26*,5637:6,5639:22,5643:27,5687:1*,5707:26,5725:8,5799:6,5909:22,5977:26,6009:12,6017:22,6021:27,6085:26,6103:8,6177:6*,6287:22,6355:26,6399:27,6453:27,6553:17,6555:6*,6679:26,6733:26,6777:27,6831:27,6859:8,6929:1*,6933:6,7057:26,7149:6,7155:27,7199:1,7209:27,7237:8,7307:1,7309:17,7311:6,7435:26,7529:22,7533:27,7577:1,7587:27,7687:17,7799:22*,7813:26,7905:6,7907:22,7911:27,7965:27,8065:17,8159:13,8283:6,8339:22,8343:27,8353:26,8537:13,8661:6,8717:22,8721:27*,8947:26,9029:7,9099:27*,9109:26,9199:17,9299:7,9325:26,9379:26,9417:6,9477:27,9487:26,9505:8,9577:17,9579:6,9703:26,9757:26,9795:6*,9855:27*";
+const TB=TD.split(",").map(x=>{const p=x.split(":");return{n:parseInt(p[0]),s:parseInt(p[1]),f:x.endsWith("*")}});
+const tc=t=>`<button type="button" class="chip" data-n="${t.n}">${t.n}<small> ${NAK[t.s-1]}${t.f?" *":""}</small></button>`;
+function renderT(N){
+  let i=TB.findIndex(t=>t.n>=N);if(i<0)i=TB.length;
+  const at=i<TB.length&&TB[i].n===N,j=at?i+1:i;
+  $("tnote").textContent=at?`${N} நூலின் பட்டியலில் உள்ளது (${NAK[TB[i].s-1]}).`:`${N} நூலின் பட்டியலில் இல்லை. அதற்கு அருகிலுள்ள எண்கள்:`;
+  $("tbefore").innerHTML=TB.slice(Math.max(0,i-5),i).map(tc).join("")||'<span class="note">இல்லை</span>';
+  $("tafter").innerHTML=TB.slice(j,j+5).map(tc).join("")||'<span class="note">இல்லை</span>';
+}
+$("tfull").innerHTML=TB.map(tc).join("");
+document.addEventListener("click",e=>{const b=e.target.closest("#tbefore .chip,#tafter .chip,#tfull .chip");if(b){$("n").value=b.dataset.n;render();window.scrollTo({top:0,behavior:"smooth"})}});
+function normFr(s){
+  return s.replace(/(\d)\s*முக்கால்/g,"$1.75").replace(/(\d)\s*அரை/g,"$1.5").replace(/(\d)\s*கால்/g,"$1.25")
+   .replace(/முக்கால்/g,"0.75").replace(/அரை/g,"0.5").replace(/கால்/g,"0.25")
+   .replace(/(\d+)\s+(\d)\/(\d)/g,(m,a,b,c)=>String(parseFloat(a)+b/c))
+   .replace(/(\d)\/(\d)/g,(m,b,c)=>String(b/c))
+   .replace(/(\d)\s*¾/g,"$1.75").replace(/(\d)\s*½/g,"$1.5").replace(/(\d)\s*¼/g,"$1.25")
+   .replace(/¾/g,"0.75").replace(/½/g,"0.5").replace(/¼/g,"0.25");
+}
+let SC=1,MEAS=false;
+function readN(){
+  SC=1;MEAS=false;
+  let t=normFr($("n").value.trim()).replace(/[’‘´]/g,"'").replace(/[”“]/g,'"').replace(/′/g,"'").replace(/″/g,'"').replace(/''/g,'"');
+  const f=t.match(/(\d+(?:\.\d+)?)\s*'/),i=t.match(/(\d+(?:\.\d+)?)\s*"/);
+  let v;
+  if(f||i){MEAS=true;v=(f?parseFloat(f[1])*12:0)+(i?parseFloat(i[1]):0);$("conv").textContent=(f?f[1]+"′ ":"")+(i?i[1]+"″ ":"")+"= "+v+" அங்குலம்"}
+  else{v=Number(t);$("conv").textContent=""}
+  if(!(v>0))return NaN;
+  const m=$("fm").value;
+  if(m==="q"&&(f||i)){const n=Math.round(v*4);SC=4;$("conv").textContent+=" → "+n+" (கால் அங்குலம் அலகு)";return n}
+  if(Number.isInteger(v))return v;
+  const n=m==="f"?Math.floor(v):m==="c"?Math.ceil(v):Math.round(v),lo=Math.floor(v),hi=Math.ceil(v);
+  const vd=x=>{if(x<1)return "-";const r=calc(x);return r.rej?"தள்ளு":(r.bad===0?"சிறந்தது":"ஏற்கலாம்")};
+  $("conv").textContent+=" → "+n+" என எடுக்கப்பட்டது ("+lo+": "+vd(lo)+", "+hi+": "+vd(hi)+")";
+  return n>0?n:NaN;
+}
+function ins(ch){const e=$("n"),a=e.selectionStart==null?e.value.length:e.selectionStart,b=e.selectionEnd==null?a:e.selectionEnd;e.value=e.value.slice(0,a)+ch+e.value.slice(b);e.focus();const p=a+ch.length;e.setSelectionRange(p,p);render()}
+$("bft").onclick=()=>ins("′");$("bin").onclick=()=>ins("″");$("fm").onchange=render;
+function fmtN(n){
+  if(!MEAS)return String(n);
+  const inch=n/SC,ft=Math.floor(inch/12),r=inch-ft*12,w=Math.floor(r),fr=r-w;
+  const fs={0:"",0.25:"¼",0.5:"½",0.75:"¾"}[fr]||"";
+  return (ft>0?ft+"′ ":"")+w+fs+"″";
+}
+function nearFit(N){
+  const mk=(dir,id)=>{
+    let out="";
+    for(let d=1;d<=300;d++){const x=N+dir*d;if(x<1)break;const r=calc(x);if(!r.rej){out=`<button type="button" class="chip" data-v="${fmtN(x)}">${fmtN(x)}<small> ${dir<0?"−":"+"}${MEAS?(d/SC)+"″":d} · ${sel().length?"நட்சத்திரம் பொருந்தும்":(r.bad===0?"சிறந்தது":"ஏற்கலாம்")}</small></button>`;break}}
+    $(id).innerHTML=out||'<span class="note">அருகில் இல்லை</span>';
+  };
+  const mk6=(dir,id)=>{let out="";for(let d=1;d<=300;d++){const x=N+dir*d;if(x<1)break;const r=calc(x);if(r.bad===0){out=`<button type="button" class="chip" data-v="${fmtN(x)}">${fmtN(x)}<small> ${dir<0?"−":"+"}${MEAS?(d/SC)+"″":d} · ஆறும் நன்று</small></button>`;break}}$(id).innerHTML=out||'<span class="note">அருகில் இல்லை</span>'};
+  const mkb=(dir,id)=>{let out="";for(let d=1;d<=300;d++){const x=N+dir*d;if(x<1)break;const r=calc(x);if(!r.rej&&r.bad===0){out=`<button type="button" class="chip" data-v="${fmtN(x)}">${fmtN(x)}<small> ${dir<0?"−":"+"}${MEAS?(d/SC)+"″":d} · ${sel().length?"எல்லாம் பொருந்தும்":"ஆறும் நன்று"}</small></button>`;break}}$(id).innerHTML=out||'<span class="note">அருகில் இல்லை</span>'};
+  mkb(-1,"bfd");mkb(1,"bfu");
+  mk(-1,"nfd");mk(1,"nfu");mk6(-1,"sfd");mk6(1,"sfu");
+}
+document.addEventListener("click",e=>{const b=e.target.closest("#nfd .chip,#nfu .chip,#sfd .chip,#sfu .chip,#bfd .chip,#bfu .chip");if(b){$("n").value=b.dataset.v;render()}});
+const NN = [
+  ['அஸ்வினி','Ashwini','மேஷம்','Chu, Che, Cho, La'],
+  ['பரணி','Bharani','மேஷம்','Li, Lu, Le, Lo'],
+  ['கார்த்திகை','Krittika','மேஷம் / ரிஷபம்','A, I, U, E'],
+  ['ரோகிணி','Rohini','ரிஷபம்','O, Va, Vi, Vu'],
+  ['மிருகசீரிடம்','Mrigashirsha','ரிஷபம் / மிதுனம்','Ve, Vo, Ka, Ki'],
+  ['திருவாதிரை','Ardra','மிதுனம்','Ku, Gha, Ng, Chha'],
+  ['புனர்பூசம்','Punarvasu','மிதுனம் / கடகம்','Ke, Ko, Ha, Hi'],
+  ['பூசம்','Pushya','கடகம்','Hu, He, Ho, Da'],
+  ['ஆயில்யம்','Ashlesha','கடகம்','Di, Du, De, Do'],
+  ['மகம்','Magha','சிம்மம்','Ma, Mi, Mu, Me'],
+  ['பூரம்','Purva Phalguni','சிம்மம்','Mo, Ta, Ti, Tu'],
+  ['உத்திரம்','Uttara Phalguni','சிம்மம் / கன்னி','Te, To, Pa, Pi'],
+  ['அஸ்தம்','Hasta','கன்னி','Pu, Sha, Na, Tha'],
+  ['சித்திரை','Chitra','கன்னி / துலாம்','Pe, Po, Ra, Ri'],
+  ['சுவாதி','Swati','துலாம்','Ru, Re, Ro, Ta'],
+  ['விசாகம்','Vishakha','துலாம் / விருச்சிகம்','Ti, Tu, Te, To'],
+  ['அனுஷம்','Anuradha','விருச்சிகம்','Na, Ni, Nu, Ne'],
+  ['கேட்டை','Jyeshtha','விருச்சிகம்','No, Ya, Yi, Yu'],
+  ['மூலம்','Mula','தனுசு','Ye, Yo, Bha, Bhi'],
+  ['பூராடம்','Purva Ashadha','தனுசு','Bhu, Dha, Pha, Dha'],
+  ['உத்திராடம்','Uttara Ashadha','தனுசு / மகரம்','Bhe, Bho, Ja, Ji'],
+  ['திருவோணம்','Shravana','மகரம்','Ju, Je, Jo, Gha'],
+  ['அவிட்டம்','Dhanishta','மகரம் / கும்பம்','Ga, Gi, Gu, Ge'],
+  ['சதயம்','Shatabhisha','கும்பம்','Go, Sa, Si, Su'],
+  ['பூரட்டாதி','Purva Bhadrapada','கும்பம் / மீனம்','Se, So, Da, Di'],
+  ['உத்திரட்டாதி','Uttara Bhadrapada','மீனம்','Du, Tha, Jha, Da'],
+  ['ரேவதி','Revati','மீனம்','De, Do, Cha, Chi']
+];
+
+/* Tamil letters for the four padams, as printed in the nama nakshatra chart. */
+const TL = ['சு, சே, சோ, ல','லி, லு, லே, லோ','அ, இ, உ, எ','ஒ, வ, வி, வு','வே, வோ, க, கி','கு, க, ங, ச','கே, கோ, ஹ, ஹி','ஹு, ஹே, ஹோ, டா','டி, டு, டே, டோ','ம, மி, மு, மே','மோ, ட, டி, டு','டே, டோ, ப, பி','பூ, ஷ, ண, ட','பே, போ, ர, ரி','ரு, ரே, ரோ, த','தி, து, தே, தோ','ந, நி, நு, நே','நோ, ய, யி, யு','யே, யோ, ப, பி','பூ, த, ப, ட','பே, போ, ஜ, ஜி','ஜீ, ஜே, ஜோ, கா','க, கீ, கு, கெ','கோ, ஸா, ஸி, ஸு','ஸே, ஸோ, த, தீ','து, ஸ்ரீ, ச','தே, தோ, ச, சி'];
+NN.forEach((n, i) => n.push(TL[i]));
+
+/* Syllable tables: first id is the primary nakshatra, the rest are other nakshatras that share the same sound. */
+const T = {
+  k:  {a:[5,23,22,6], i:[5,23], u:[6,23], e:[7,23], o:[7,5,24]},
+  g:  {a:[23], i:[23], u:[23], e:[23], o:[24]},
+  ch: {a:[27], i:[27], u:[1], e:[1], o:[1]},
+  s:  {a:[24], i:[24], u:[24], e:[25], o:[25]},
+  d:  {a:[8,25,26], i:[9,25], u:[9,26], e:[9,27], o:[9,27]},
+  t:  {a:[11,15], i:[11,16], u:[11,16], e:[12,16], o:[12,16]},
+  th: {a:[13,26,15,20,25], i:[16,25,11], u:[16,26,11], e:[16,27,12], o:[16,27,12]},
+  p:  {a:[12], i:[12], u:[13], e:[14], o:[14]},
+  bh: {a:[19], i:[19], u:[20], e:[21], o:[21]},
+  m:  {a:[10], i:[10], u:[10], e:[10], o:[11]},
+  n:  {a:[17,13], i:[17], u:[17], e:[17], o:[18]},
+  y:  {a:[18], i:[18], u:[18], e:[19], o:[19]},
+  r:  {a:[14], i:[14], u:[15], e:[15], o:[15]},
+  l:  {a:[1], i:[2], u:[2], e:[2], o:[2]},
+  v:  {a:[4], i:[4], u:[4], e:[5], o:[5]},
+  j:  {a:[21], i:[21,22], u:[22], e:[22], o:[22]},
+  h:  {a:[7], i:[7], u:[8], e:[8], o:[8]}
+};
+const FIXED = { sh:[13], dh:[20,8,26,25], ph:[20], gh:[6,22], jh:[26], ng:[6], chh:[6] };
+/* Tamil letters that share one sound in writing get their own tables. */
+const TAMIL_CH = {a:[24,27,6,26], i:[24,27], u:[1,24], e:[1,25], o:[1,25]};
+const TAMIL_TH = {a:[15,20,13,25,26], i:[16,25,11], u:[16,26,11], e:[16,27,12], o:[16,27,12]};
+const TAMIL_D  = {a:[8,11,13,20], i:[9,11], u:[9,11], e:[9,12], o:[9,12]};
+const TAMIL_P  = {a:[12,19,20], i:[12,19], u:[13,20], e:[14,21], o:[14,21]};
+
+function lookup(c, v) {
+  if (FIXED[c]) return FIXED[c];
+  return T[c] && T[c][v] ? T[c][v] : null;
+}
+
+/* Towns named in the guide. These return exactly what the guide lists. */
+const OV = {};
+[
+  [['chennai','சென்னை'],1],[['lalgudi','லால்குடி'],1],
+  [['lonakla','lonavla','லோணாவ்ளா'],2],
+  [['arkona','arakkonam','அரக்கோணம்'],3],[['erode','ஈரோடு'],3],
+  [['vandavasi','வந்தவாசி'],4],[['villupuram','viluppuram','விழுப்புரம்'],4],
+  [['vellore','வேலூர்'],5],[['kanchipuram','kancheepuram','காஞ்சிபுரம்'],5],
+  [['kumbakonam','கும்பகோணம்'],6],
+  [['coimbatore','koimbatore','கோயம்புத்தூர்'],7],[['hosur','ஓசூர்'],7],
+  [['dharmapuri','darmapuri','தருமபுரி','தர்மபுரி'],8],
+  [['dindigul','திண்டுக்கல்'],9],
+  [['madurai','மதுரை'],10],[['musiri','முசிறி'],10],
+  [['tirunelveli','thirunelveli','திருநெல்வேலி'],11],[['tuticorin','thoothukudi','தூத்துக்குடி'],11],
+  [['palani','பழனி'],12],[['pollachi','பொள்ளாச்சி'],12],
+  [['pudukkottai','புதுக்கோட்டை'],13],[['thanjavur','tanjore','தஞ்சாவூர்'],13],
+  [['perambalur','பெரம்பலூர்'],14],[['rameswaram','rameshwaram','ராமேஸ்வரம்'],14],
+  [['tambaram','தாம்பரம்'],15],
+  [['tiruppur','thiruppur','திருப்பூர்'],16],[['tenkasi','தென்காசி'],16],
+  [['nagercoil','நாகர்கோவில்'],17],[['neyveli','நெய்வேலி'],17],
+  [['yercaud','yaercaud','ஏற்காடு'],18],
+  [['bhavani','பவானி'],19],
+  [['dharapuram','தாராபுரம்'],20],
+  [['jayankondam','ஜெயங்கொண்டம்'],21],[['jeyankondam'],22],
+  [['gandhipuram','காந்திபுரம்'],23],[['guindy','கிண்டி'],23],
+  [['salem','சேலம்'],24],[['sivakasi','சிவகாசி'],24],
+  [['sengottai','செங்கோட்டை'],25],
+  [['chidambaram','சிதம்பரம்'],27]
+].forEach(([names, id]) => names.forEach(n => { OV[n] = id; }));
+
+/* English: read the first sound of the spelling. */
+const EV = { a:'a', aa:'a', i:'i', ee:'i', y:'i', u:'u', oo:'u', e:'e', ai:'e', ei:'e', ey:'e', o:'o', au:'o', ou:'o', oa:'o' };
+function readVowel(s) {
+  const two = s.slice(0, 2);
+  if (EV[two] && two.length === 2) return EV[two];
+  return EV[s[0]] || null;
+}
+function parseEnglish(w) {
+  if (!w) return null;
+  if (/^s(h)?ri/.test(w)) return { ids: [26, 24], sound: 'Sri' };
+  if ('aeiou'.includes(w[0])) {
+    const v = readVowel(w);
+    return { ids: v === 'o' ? [4] : [3], sound: v.toUpperCase() };
+  }
+  let c;
+  if (w.startsWith('chh')) c = 'chh';
+  else if (['ch','sh','th','dh','bh','ph','kh','gh','jh','ng'].includes(w.slice(0, 2))) c = w.slice(0, 2);
+  else c = w[0];
+  const rest = w.slice(c.length);
+  let key = c;
+  if (c === 'kh' || c === 'q') key = 'k';
+  else if (c === 'c') key = 'eiy'.includes(rest[0] || '') ? 's' : 'k';
+  else if (c === 'w') key = 'v';
+  else if (c === 'f') key = 'ph';
+  else if (c === 'b') key = 'bh';
+  let v = 'a';
+  for (let i = 0; i < Math.min(3, rest.length); i++) {
+    const x = readVowel(rest.slice(i));
+    if (x) { v = x; break; }
+  }
+  const ids = lookup(key, v);
+  if (!ids) return null;
+  const sound = c.charAt(0).toUpperCase() + c.slice(1) + (FIXED[key] ? '' : v);
+  return { ids, sound };
+}
+
+/* Tamil: read the first letter and its vowel sign. */
+const TC = {'க':'k','ங':'ng','ச':'ch','ஞ':'ng','ட':'d','ண':'sh','த':'th','ந':'n','ப':'p','ம':'m','ய':'y','ர':'r','ல':'l','வ':'v','ள':'l','ற':'r','ன':'n','ஜ':'j','ஷ':'sh','ஸ':'s','ஶ':'s','ஹ':'h'};
+const VS = {'ா':'a','ி':'i','ீ':'i','ு':'u','ூ':'u','ெ':'e','ே':'e','ை':'e','ொ':'o','ோ':'o','ௌ':'o'};
+const VI = {'அ':'a','ஆ':'a','இ':'i','ஈ':'i','உ':'u','ஊ':'u','எ':'e','ஏ':'e','ஐ':'e','ஒ':'o','ஓ':'o','ஔ':'o'};
+function parseTamil(s) {
+  const c = s[0];
+  if (VI[c]) return { ids: VI[c] === 'o' ? [4] : [3], sound: c };
+  if (!TC[c]) return null;
+  if ((c === 'ஸ' || c === 'ஶ') && s[1] === '்' && s[2] === 'ர') return { ids: [26, 24], sound: s.slice(0, 4) };
+  let v = 'a', sound = c;
+  if (s[1] === '்') { v = VS[s[3]] || 'a'; sound = s.slice(0, 4); }
+  else if (VS[s[1]]) { v = VS[s[1]]; sound = c + s[1]; }
+  let ids;
+  if (c === 'ச') ids = TAMIL_CH[v];
+  else if (c === 'த') ids = TAMIL_TH[v];
+  else if (c === 'ப') ids = TAMIL_P[v];
+  else if (c === 'ட') ids = TAMIL_D[v];
+  else ids = lookup(TC[c], v);
+  return ids ? { ids, sound } : null;
+}
+
+function compute(raw) {
+  const s = raw.trim();
+  if (!s) return { kind: 'empty' };
+  let sound = null, ids = null, key;
+  if (/[஀-௿]/.test(s[0])) {
+    key = s.replace(/[\s.,\-]/g, '');
+    const r = parseTamil(s);
+    if (r) { ids = r.ids; sound = r.sound; }
+  } else if (/[a-zA-Z]/.test(s)) {
+    key = s.toLowerCase().replace(/[^a-z]/g, '');
+    const r = parseEnglish(key);
+    if (r) { ids = r.ids; sound = r.sound; }
+  } else return { kind: 'bad' };
+  if (OV[key]) return { kind: 'ok', ids: [OV[key]], sound: sound || '', exact: true };
+  if (!ids) return { kind: 'bad' };
+  return { kind: 'ok', ids, sound, exact: false };
+}
+
+
+(function(){let t='<tr><th>எண்</th><th>நட்சத்திரம்</th><th>ராசி</th><th>தமிழ் எழுத்துகள்</th><th>ஆங்கில ஒலிகள்</th></tr>';NN.forEach((n,i)=>{t+=`<tr><td>${i+1}</td><td>${NAK[i]}</td><td>${n[2]}</td><td>${n[4]}</td><td>${n[3]}</td></tr>`});$("chart").innerHTML=t})();
+function bindName(inp,sel,hint){
+  $(inp).addEventListener("input",()=>{
+    const r=compute($(inp).value),h=$(hint);
+    if(r.kind==="empty"){h.innerHTML="";return}
+    if(r.kind==="bad"){h.textContent="இந்தப் பெயருக்கு ஒலி பட்டியல் இல்லை. வேறு எழுத்தில் எழுதிப் பாருங்கள்.";return}
+    $(sel).value=r.ids[0];
+    h.innerHTML="முதல் ஒலி: "+r.sound+" → "+r.ids.map(id=>`<button type="button" class="chip" data-s="${sel}" data-v="${id}">${NAK[id-1]}</button>`).join("")+(r.exact?" (கையேட்டு உதாரணம்)":"");
+    render();
+  });
+}
+bindName("kname","kn","kh");bindName("vname","vn","vh");bindName("sname","sn","sh");
+document.addEventListener("click",e=>{const b=e.target.closest(".nm .chip");if(b){$(b.dataset.s).value=b.dataset.v;render()}});
+function scan(){
+  const a=Math.max(1,parseInt($("a").value)||1),z=Math.min(parseInt($("z").value)||a,a+999),mb=parseInt($("mb").value),ss=sel(),hit=[];
+  for(let i=a;i<=z;i++){const r=calc(i);if(!r.rej&&r.bad<=mb&&ss.every(q=>par(q.i,r.st).ok))hit.push(i)}
+  $("chips").innerHTML=hit.length?hit.map(i=>`<button type="button" class="chip" data-n="${i}">${i}</button>`).join(""):`<span class="note">இந்த வரம்பில் பொருந்தும் எண் இல்லை. வரம்பை விரிக்கவும்.</span>`;
+}
+["kn","vn","sn"].forEach(id=>{$(id).innerHTML='<option value="0">தேர்வு இல்லை</option>'+NAK.map((n,i)=>`<option value="${i+1}">${i+1}. ${n}</option>`).join("");$(id).onchange=render});
+$("dn").innerHTML='<option value="">தேர்வு இல்லை</option>'+DEITY.map(d=>`<option value="${d[1]}">${d[0]}</option>`).join("");
+$("dn").onchange=()=>{const i=NAK.indexOf($("dn").value)+1;$("sn").value=i>0?i:0;render()};
+$("n").oninput=render;$("scan").onclick=scan;
+$("chips").onclick=e=>{const b=e.target.closest(".chip");if(b){$("n").value=b.dataset.n;render();window.scrollTo({top:0,behavior:"smooth"})}};
+render();
+</script>
+</body>
+</html>

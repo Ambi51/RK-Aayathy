@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#1d5c63" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14191b" media="(prefers-color-scheme: dark)">
+<meta name="format-detection" content="telephone=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RK ஆயாதி">
+<title>RK ஆயாதி கணிதம் – மரபுக் கட்டடக்கலை முறை</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<main>
+<h1>RK ஆயாதி கணிதம்</h1>
+<p class="sub">மரபுக் கட்டடக்கலை (கோ. திருஞானம்) நூல் முறை, நாம நட்சத்திரக் கணிப்புடன்</p>
+
+<section>
+<h2>அளவு</h2>
+<label for="n">ஆயாதி எண்</label>
+<input id="n" type="text" value="23" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="23 அல்லது 5′ 3″">
+<div style="display:flex;gap:8px;justify-content:center;margin-top:8px"><button type="button" class="chip" id="bft">′ அடி</button><button type="button" class="chip" id="bin">″ அங்குலம்</button></div>
+<p class="hint" id="conv" style="text-align:center"></p>
+<label for="fm">பின்னம் (கால், அரை, முக்கால்) உள்ள அளவை எடுக்கும் முறை</label>
+<select id="fm"><option value="r">அருகிலுள்ள முழு அங்குலம்</option><option value="f">கீழ் முழு அங்குலம்</option><option value="c">மேல் முழு அங்குலம்</option><option value="q">கால் அங்குலமே அலகு (×4)</option></select>
+<p class="hint">½, ¼, ¾, 1/2, அரை, கால், முக்கால் ஆகியவற்றை இடலாம். எ.கா. 6′ 3½″</p>
+<p class="hint">படிமம் அல்லது கட்டட உயரம் அல்லது நீளத்தை, தேர்ந்த அலகில் எடுத்த முழு எண்.</p>
+<h2 style="margin-top:18px;font-size:1rem">நட்சத்திரங்கள் (பெயரிலிருந்தும் காணலாம்)</h2>
+<div class="nmrow"><label for="kname">கர்த்தா பெயர்</label><input id="kname" type="text" placeholder="எ.கா. குமார், Kumar" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="hint nm" id="kh"></div>
+<label for="kn">கர்த்தா நட்சத்திரம்</label><select id="kn"></select></div>
+<div class="nmrow"><label for="vname">ஊர் பெயர்</label><input id="vname" type="text" placeholder="எ.கா. மதுரை, Salem" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="hint nm" id="vh"></div>
+<label for="vn">வாஸ்து (ஊர்) நட்சத்திரம்</label><select id="vn"></select></div>
+<div class="nmrow"><label for="dn">தெய்வம் (தேர்ந்தால் சுவாமி நட்சத்திரம் தானாக வரும்)</label><select id="dn"></select>
+<label for="sname">அல்லது சுவாமி நாமம்</label><input id="sname" type="text" placeholder="எ.கா. முருகன்" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="hint nm" id="sh"></div>
+<label for="sn">சுவாமி நட்சத்திரம்</label><select id="sn"></select></div>
+<p class="hint">பெயரின் முதல் ஒலியைக் கொண்டு நாம நட்சத்திரம் கணிக்கப்படும். ஒரு ஒலிக்கு ஒன்றுக்கு மேற்பட்ட நட்சத்திரம் வந்தால், பொருத்தமானதைத் தொடுங்கள்.</p>
+</section>
+
+<section>
+<h2>முடிவு</h2>
+<div id="sum"></div>
+<div class="wrap"><table>
+<thead><tr><th>பொருத்தம்</th><th>கணக்கு</th><th>மீதி</th><th>பலன்</th><th></th></tr></thead>
+<tbody id="rows"></tbody></table></div>
+</section>
+
+<section>
+<h2>அருகிலுள்ள பொருந்தும் அளவு</h2>
+<p class="note" style="margin-top:0">அளவைக் குறைத்தோ கூட்டியோ பெறக்கூடிய அடுத்த பொருந்தும் அளவு. தொட்டால் மேலே இட்டு கணிக்கும்.</p>
+<div class="nfgrid"><div>
+<div class="nfh">நட்சத்திரங்கள் பொருந்தும் அருகிலுள்ள அளவு</div><div class="note">குறைத்தால்</div><div class="chips" id="nfd" style="margin-top:4px"></div>
+<div class="note" style="margin-top:10px">கூட்டினால்</div><div class="chips" id="nfu" style="margin-top:4px"></div>
+</div><div>
+<div class="nfh">ஆறு அடிப்படைப் பொருத்தங்களும் நன்றாக அமையும் அருகிலுள்ள அளவு</div>
+<div class="note">குறைத்தால்</div><div class="chips" id="sfd" style="margin-top:4px"></div>
+<div class="note" style="margin-top:10px">கூட்டினால்</div><div class="chips" id="sfu" style="margin-top:4px"></div>
+</div></div>
+<div class="nfh" style="margin-top:18px;min-height:0">நட்சத்திரப் பொருத்தமும் ஆறு அடிப்படைப் பொருத்தங்களும் சேர்ந்து அமையும் அருகிலுள்ள அளவு</div>
+<div class="nfgrid"><div><div class="note">குறைத்தால்</div><div class="chips" id="bfd" style="margin-top:4px"></div></div>
+<div><div class="note">கூட்டினால்</div><div class="chips" id="bfu" style="margin-top:4px"></div></div></div>
+</section>
+
+<section>
+<h2>நூலின் பொருந்திய எண்கள்</h2>
+<p id="tnote" class="note" style="margin-top:0"></p>
+<div class="note">முன் உள்ள 5</div><div class="chips" id="tbefore" style="margin-top:4px"></div>
+<div class="note" style="margin-top:10px">பின் உள்ள 5</div><div class="chips" id="tafter" style="margin-top:4px"></div>
+<details><summary>முழுப் பட்டியல்</summary>
+<p class="note">* குறியிட்டவை படத்தில் தெளிவில்லாமலோ, எண்ணும் நட்சத்திரமும் பொருந்தாமலோ இருந்ததால் திருத்தப்பட்டவை. 8 பதிவுகள் (1011, 2683, 2895, 3919, 6269, 8177, 8569, 9039) சரிசெய்ய முடியாததால் விடப்பட்டுள்ளன.</p>
+<div class="chips" id="tfull"></div></details>
+</section>
+
+<section>
+<h2>நட்சத்திரப் பலன் (தாராபலன்)</h2>
+<p class="note" style="margin-top:0">ஆயாதி நட்சத்திரம்: <b id="ayn"></b>. கர்த்தா, வாஸ்து, சுவாமி நட்சத்திரங்களிலிருந்து எண்ணி, 9-ஆல் வகுத்த மீதியால் பரியாயம் காணப்படும்.</p>
+<div class="wrap"><table>
+<thead><tr><th>யாருக்கு</th><th>நட்சத்திரம்</th><th>எண்ணிக்கை</th><th>பரியாயம்</th><th></th></tr></thead>
+<tbody id="srows"></tbody></table></div>
+</section>
+
+<section>
+<h2>ஏற்ற எண்களைத் தேடு</h2>
+<div class="two">
+<div><label for="a">தொடக்கம்</label><input id="a" type="number" min="1" value="1" inputmode="numeric"></div>
+<div><label for="z">முடிவு</label><input id="z" type="number" min="1" value="120" inputmode="numeric"></div>
+<div><label for="mb">அனுமதிக்கும் தீய பலன்</label><select id="mb"><option value="0">0</option><option value="1">1</option><option value="2" selected>2</option></select></div>
+</div>
+<button id="scan" type="button">தேடு</button>
+<p class="hint">அடிப்படை ஆறு பொருத்தங்களில் நூலின் விதிப்படி ஏற்கத்தக்க எண்கள் காட்டப்படும். மேலே நட்சத்திரம் தேர்ந்திருந்தால் அவற்றின் பொருத்தமும் பார்க்கப்படும். ஒன்றைத் தொட்டால் மேலே கணிக்கப்படும்.</p>
+<div class="chips" id="chips"></div>
+</section>
+
+<details><summary>27 நட்சத்திரங்களும் ஒலிகளும்</summary><div class="wrap"><table id="chart"></table></div></details>
+
+<p class="note">இது நூலில் உள்ள விதிகளின் அடிப்படையிலான கணக்கு. இறுதி முடிவுக்கு அனுபவமுள்ள ஸ்தபதியிடம் உறுதி செய்துகொள்ளவும்.</p>
+<p class="note"><a href="https://claude.ai/artifact/VXerRVozioDgxiRgUHxcvd" data-external="1">சிற்பச் செந்நூல் முறைக் கணிப்பான்</a></p>
+</main>
+
+<div class="dock" id="dock" aria-live="polite">
+  <div class="dockv" id="dockv"></div>
+  <button type="button" id="share" class="dockbtn">பகிர்</button>
+</div>
+
+<script src="js/data-results.js"></script>
+<script src="js/data-book.js"></script>
+<script src="js/data-names.js"></script>
+<script src="js/data-sounds.js"></script>
+<script src="js/core.js"></script>
+<script src="js/naming.js"></script>
+<script src="js/measure.js"></script>
+<script src="js/render.js"></script>
+<script src="js/app.js"></script>
+<script src="js/native.js"></script>
+</body>
+</html>

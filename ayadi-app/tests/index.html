@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ayadi tests</title>
+<style>
+body{font:15px/1.5 system-ui,sans-serif;margin:24px;max-width:900px}
+h1{font-size:1.2rem}
+.ok{color:#1b7f3b}.fail{color:#b3261e;font-weight:700}
+td,th{padding:4px 10px;border-bottom:1px solid #ddd;text-align:left;vertical-align:top}
+code{background:#f2f2f2;padding:0 4px;border-radius:3px}
+#summary{font-size:1.05rem;font-weight:700;margin:12px 0}
+</style>
+</head>
+<body>
+<h1>RK ஆயாதி — calculation tests</h1>
+<div id="summary">running…</div>
+<table><thead><tr><th>Result</th><th>Test</th><th>Detail</th></tr></thead><tbody id="out"></tbody></table>
+
+<script src="../www/js/data-results.js"></script>
+<script src="../www/js/data-book.js"></script>
+<script src="../www/js/data-names.js"></script>
+<script src="../www/js/data-sounds.js"></script>
+<script src="../www/js/core.js"></script>
+<script src="../www/js/naming.js"></script>
+<script src="../www/js/measure.js"></script>
+<script>
+(function () {
+  var Core = window.AyadiCore, Naming = window.AyadiNaming, Measure = window.AyadiMeasure;
+  var rows = [], pass = 0, fail = 0;
+
+  function check(name, actual, expected) {
+    var a = JSON.stringify(actual), e = JSON.stringify(expected);
+    var ok = a === e;
+    if (ok) { pass++; } else { fail++; }
+    rows.push({ ok: ok, name: name, detail: ok ? a : 'expected ' + e + ' / got ' + a });
+  }
+
+  function truthy(name, value) {
+    check(name, !!value, true);
+  }
+
+  /* ---- remainder ---- */
+  check('R(184,12)', Core.R(184, 12), 4);
+  check('R(24,12) wraps to 12', Core.R(24, 12), 12);
+  check('R(0,5) wraps to 5', Core.R(0, 5), 5);
+
+  /* ---- known ayadi values for 23 ---- */
+  var r23 = Core.calc(23, []);
+  check('N=23 nakshatra number', r23.st, 22);
+  check('N=23 nakshatra name', r23.sn, 'திருவோணம்');
+  check('N=23 bad-match count', r23.bad, 2);
+  check('N=23 accepted without picks', r23.rej, false);
+  check('N=23 gana', Core.ganaOf(r23.sn), 'தேவகணம்');
+  check('N=23 yoga default', r23.yogaName, 'சித்தயோகம்');
+
+  var r24 = Core.calc(24, []);
+  check('N=24 nakshatra number', r24.st, 3);
+  check('N=24 is judged by the six matches', r24.rej, r24.bad >= 3);
+
+  /* ---- paribhaga ---- */
+  check('par(1,22) count', Core.par(1, 22).c, 22);
+  check('par(1,22) remainder', Core.par(1, 22).p, 4);
+  check('par(1,22) accepted', Core.par(1, 22).ok, true);
+  check('par(1,1) rejected', Core.par(1, 1).ok, false);
+  check('par(10,22) accepted', Core.par(10, 22).ok, true);
+
+  /* ---- picks change the verdict ---- */
+  var bad = Core.calc(23, [1]);
+  check('N=23 with a mismatching pick is rejected', bad.rej, true);
+  var good = Core.calc(23, [22]);
+  check('N=23 with a matching pick is accepted', good.rej, false);
+
+  /* ---- nearest fits ---- */
+  var down = Core.nearFit(23, [], -1, 'six');
+  var up = Core.nearFit(23, [], 1, 'six');
+  truthy('nearest six-fit below 23 exists', down && down.value < 23);
+  truthy('nearest six-fit above 23 exists', up && up.value > 23);
+  check('nearFit of 1 below is null', Core.nearFit(1, [], -1, 'both'), null);
+
+  /* ---- ages / names ---- */
+  check('ageBand(21)', Core.ageBand(21), 'உத்தமம்');
+  check('ageBand(50)', Core.ageBand(50), 'உத்தம–மத்தியம்');
+  check('ageBand(90)', Core.ageBand(90), 'விருத்தாயுசு');
+
+  /* ---- name lookup ---- */
+  check("'Kumar' primary sound", Naming.compute('Kumar').ids[0], 6);
+  check("'Kumar' sound label", Naming.compute('Kumar').sound, 'Ku');
+  check("town 'மதுரை'", Naming.compute('மதுரை').ids, [10]);
+  check("town 'Madurai'", Naming.compute('Madurai').ids, [10]);
+  check("town 'Salem'", Naming.compute('Salem').ids, [24]);
+  check("town is flagged exact", Naming.compute('Salem').exact, true);
+  check("'முருகன்' -> Makam", Naming.compute('முருகன்').ids, [10]);
+  check('empty input', Naming.compute('   ').kind, 'empty');
+  check('digits only', Naming.compute('123').kind, 'bad');
+  truthy("'Krishna' resolves", Naming.compute('Krishna').ids.length > 0);
+  truthy('every nakshatra name resolves',
+    Core.NAK.every(function (n) { return Naming.compute(n).kind === 'ok'; }));
+
+  /* ---- measurement parsing ---- */
+  var feet = Measure.parseInput('5′ 3″', 'r');
+  check('5ft 3in -> 63 inches', feet.value, 63);
+  check('measurement flagged as measured', feet.measured, true);
+  check('fraction rounds up', Measure.parseInput('6′ 3½″', 'r').value, 76);
+  check('fraction floors', Measure.parseInput('6′ 3½″', 'f').value, 75);
+  check('plain number stays integer', Measure.parseInput('23', 'r').value, 23);
+  check('plain number is not "measured"', Measure.parseInput('23', 'r').measured, false);
+  check('Tamil word fraction', Measure.parseInput('6 அரை', 'r').value, 7);
+  check('quarter-inch unit', Measure.parseInput('5′ 3″', 'q').value, 252);
+  check('a/b fraction', Measure.parseInput('4 1/2', 'r').value, 5);
+  check('empty input is NaN', isNaN(Measure.parseInput('', 'r').value), true);
+  check('zero is rejected', isNaN(Measure.parseInput('0', 'r').value), true);
+  check('fmtValue 63in', Measure.fmtValue(63, 1, true), '5′ 3″');
+  check('fmtValue 252 quarters', Measure.fmtValue(252, 4, true), '5′ 3″');
+
+  /* ---- book list integrity ---- */
+  var BOOK = window.AyadiData.BOOK;
+  check('book list length', BOOK.length, 264);
+  truthy('book entries are ascending',
+    BOOK.every(function (e, i) { return i === 0 || e.n > BOOK[i - 1].n; }));
+  truthy('book nakshatra ids are valid',
+    BOOK.every(function (e) { return e.s >= 1 && e.s <= 27; }));
+
+  rows.forEach(function (row) {
+    var tr = document.createElement('tr');
+    tr.innerHTML = '<td class="' + (row.ok ? 'ok' : 'fail') + '">' + (row.ok ? 'PASS' : 'FAIL') +
+      '</td><td>' + row.name + '</td><td><code>' + row.detail + '</code></td>';
+    document.getElementById('out').appendChild(tr);
+  });
+
+  var summary = document.getElementById('summary');
+  summary.textContent = fail ? fail + ' FAILED, ' + pass + ' passed' : 'ALL ' + pass + ' TESTS PASSED';
+  summary.className = fail ? 'fail' : 'ok';
+  document.title = fail ? 'FAIL ' + fail : 'PASS ' + pass;
+})();
+</script>
+</body>
+</html>
